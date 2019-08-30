@@ -5,7 +5,7 @@
 # Music Codes
 
 
-Music Codes library provides handy tools for codes in the music industry
+Music Codes PHP library provides handy tools for codes in the music industry
 
 Isrc
 ====

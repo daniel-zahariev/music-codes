@@ -1,6 +1,6 @@
 {
   "name": "danielz/music-codes",
-  "description": "Lib for working with music codes - ISRC",
+  "description": "Music Codes PHP library provides handy tools for codes in the music industry",
   "keywords": ["isrc", "music", "code"],
   "type": "library",
   "license": "MIT",
