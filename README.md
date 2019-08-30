@@ -1,8 +1,8 @@
-|License|
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/daniel-zahariev/music-codes/blob/master/COPYING)
+[![Build Status](https://travis-ci.org/daniel-zahariev/music-codes.svg?branch=master)](https://travis-ci.org/daniel-zahariev/music-codes)
 
-*******
-Music Codes
-*******
+
+# Music Codes
 
 
 Music Codes library provides handy tools for codes in the music industry
@@ -74,8 +74,4 @@ License
 
 MIT License
 
-See `COPYING <COPYING>`_ to see the full text.
-
-.. |License| image:: https://img.shields.io/badge/license-MIT-brightgreen.svg
-   :target: COPYING
-   :alt: Repository License
+See [COPYING](COPYING) to see the full text.
