@@ -157,7 +157,7 @@ class Isrc
      */
     public function setCountryCode(string $country_code): Isrc
     {
-        $this->country_code = $country_code;
+        $this->country_code = strtoupper($country_code);
 
         $this->validate();
 
@@ -178,7 +178,7 @@ class Isrc
      */
     public function setIssuerCode(string $issuer_code): Isrc
     {
-        $this->issuer_code = $issuer_code;
+        $this->issuer_code = strtoupper($issuer_code);
 
         $this->validate();
 
@@ -201,13 +201,11 @@ class Isrc
      */
     public function setYear($year, $reset_id_to = false)
     {
-        $int_year = (int)$year;
+        $this->year = (int)$year;
 
-        if ($this->year != $int_year && is_numeric($reset_id_to)) {
-            $this->setId($reset_id_to);
+        if (is_numeric($reset_id_to)) {
+            $this->setId($reset_id_to, false);
         }
-
-        $this->year = $int_year;
 
         $this->validate();
 
@@ -260,11 +258,11 @@ class Isrc
     {
         $this->is_valid = true;
 
-        if (strlen($this->country_code) != 2) {
+        if (strlen($this->country_code) != 2 || !ctype_alpha($this->country_code)) {
             $this->is_valid = false;
         }
 
-        if (strlen($this->issuer_code) != 3) {
+        if (strlen($this->issuer_code) != 3 || !ctype_alnum($this->issuer_code)) {
             $this->is_valid = false;
         }
 

@@ -153,6 +153,28 @@ class IsrcTest extends TestCase
         $this->assertEquals('GBA1B9999999', $isrc->getIsrc(false, false));
     }
 
+    public function testResetYear()
+    {
+        $isrc = new Isrc('GBA1B1100001');
+
+        $isrc->setYear(12, 100);
+        $this->assertTrue($isrc->isValid());
+        $this->assertEquals(12, $isrc->getYear(false));
+        $this->assertEquals(100, $isrc->getId(false));
+
+        $isrc->setYear(98, 9998);
+        $this->assertTrue($isrc->isValid());
+        $this->assertEquals(98, $isrc->getYear(false));
+        $this->assertEquals(9998, $isrc->getId(false));
+
+
+        $isrc->setYear(-1, 1);
+        $this->assertFalse($isrc->isValid());
+
+        $isrc->setYear(1, 0);
+        $this->assertFalse($isrc->isValid());
+    }
+
     public function testSettingTheId()
     {
         $isrc = new Isrc('GB-A1B-11-00036');
@@ -170,4 +192,34 @@ class IsrcTest extends TestCase
         $this->assertEquals(99998, $isrc->getId(false));
         $this->assertEquals(11, $isrc->getYear(false));
     }
+
+    public function testInvalidCountry()
+    {
+        $isrc = new Isrc('GB-A1B-11-00036');
+
+        $isrc->setCountryCode('12');
+        $this->assertFalse($isrc->isValid());
+
+        $isrc->setCountryCode('-');
+        $this->assertFalse($isrc->isValid());
+
+        $isrc->setCountryCode('A1');
+        $this->assertFalse($isrc->isValid());
+    }
+
+    public function testInvalidIssuer()
+    {
+        $isrc = new Isrc('GB-A1B-11-00036');
+
+        $isrc->setIssuerCode('А');
+        $this->assertFalse($isrc->isValid());
+
+        $isrc->setIssuerCode('АB');
+        $this->assertFalse($isrc->isValid());
+
+        $isrc->setIssuerCode('---');
+        $this->assertFalse($isrc->isValid());
+    }
+
+
 }
