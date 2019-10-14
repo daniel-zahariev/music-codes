@@ -16,11 +16,17 @@
     "php": ">=7.2.0"
   },
   "require-dev": {
-    "phpunit/phpunit": "^8.3"
+    "phpunit/phpunit": "^8.3",
+    "php-coveralls/php-coveralls": "^2.1"
   },
   "autoload": {
     "psr-4": {
       "DanielZ\\MusicCodes\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "DanielZ\\MusicCodes\\Tests\\": "tests/"
     }
   }
 }

@@ -1,6 +1,6 @@
 [![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/daniel-zahariev/music-codes/blob/master/COPYING)
 [![Build Status](https://travis-ci.org/daniel-zahariev/music-codes.svg?branch=master)](https://travis-ci.org/daniel-zahariev/music-codes)
-
+[![Coverage Status](https://coveralls.io/repos/github/daniel-zahariev/music-codes/badge.svg?branch=master)](https://coveralls.io/github/daniel-zahariev/music-codes?branch=master)
 
 # Music Codes
 

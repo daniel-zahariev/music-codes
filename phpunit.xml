@@ -1,21 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <phpunit backupGlobals="false"
          backupStaticAttributes="false"
-         bootstrap="vendor/autoload.php"
          colors="true"
          convertErrorsToExceptions="true"
-         convertNoticesToExceptions="true"
+         convertNoticesToExceptions="false"
          convertWarningsToExceptions="true"
          processIsolation="false"
-         stopOnFailure="false">
+         stopOnFailure="true"
+         bootstrap="vendor/autoload.php"
+>
+    <logging>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
+
     <testsuites>
-        <testsuite name="All">
-            <directory suffix="Test.php">./tests</directory>
+        <testsuite name="Music Codes">
+            <directory suffix="Test.php">./tests/</directory>
         </testsuite>
     </testsuites>
+
     <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
-            <directory suffix=".php">./app</directory>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
         </whitelist>
     </filter>
 </phpunit>

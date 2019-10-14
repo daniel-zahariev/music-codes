@@ -1,6 +1,6 @@
 <?php
 
-// namespace Tests;
+ namespace DanielZ\MusicCodes\Tests;
 
 use PHPUnit\Framework\TestCase;
 use DanielZ\MusicCodes\Isrc;
