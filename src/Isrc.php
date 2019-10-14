@@ -124,7 +124,7 @@ class Isrc
      */
     public function __toString()
     {
-        return $this->getIsrc(true);
+        return $this->getIsrc(true, false);
     }
 
     /**
@@ -234,12 +234,18 @@ class Isrc
 
         if ($flip_year) {
             if ($this->id < self::MIN_ID) {
-                $this->year = (($this->year - 1) + 100) % 100;
-                $this->id = self::MAX_ID;
+                while($this->id < self::MIN_ID) {
+                    $this->id += self::MAX_ID;
+                    $this->year -= $flip_year ? 1 : 0;
+                }
             } elseif ($this->id > self::MAX_ID) {
-                $this->year = ($this->year + 1) % 100;
-                $this->id = self::MIN_ID;
+                while($this->id > self::MAX_ID) {
+                    $this->id -= self::MAX_ID;
+                    $this->year += $flip_year ? 1 : 0;
+                }
             }
+
+            $this->year = (($this->year % 100) + 100) % 100;
         }
 
         $this->validate();

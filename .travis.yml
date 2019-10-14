@@ -1,7 +1,6 @@
 language: php
 
 php:
-  - 7.1
   - 7.2
   - 7.3
 
@@ -20,4 +19,5 @@ script:
   - vendor/bin/phpunit
 
 after_success:
+  - travis_retry composer require php-coveralls/php-coveralls
   - travis_retry vendor/bin/php-coveralls --coverage_clover=build/logs/clover.xml -v

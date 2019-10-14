@@ -9,13 +9,39 @@ class IsrcTest extends TestCase
 {
     public function testParts()
     {
-        $isrc = new Isrc('GB-A1B-11-00036');
+        $sample_isrc = 'GB-A1B-11-00036';
+        $isrc = new Isrc($sample_isrc);
         self::assertEquals('GB', $isrc->getCountryCode());
         self::assertEquals('A1B', $isrc->getIssuerCode());
         self::assertEquals('11', $isrc->getYear(true));
         self::assertEquals(11, $isrc->getYear(false));
         self::assertEquals('00036', $isrc->getId(true));
         self::assertEquals(36, $isrc->getId(false));
+        self::assertEquals($sample_isrc, (string)$isrc);
+        self::assertEquals($sample_isrc, $isrc->getIsrc(true, false));
+        self::assertEquals("ISRC {$sample_isrc}", $isrc->getIsrc(true, true));
+    }
+
+    public function testFromParts()
+    {
+        $isrc = Isrc::fromParts('GB', 'A1B', '11', '00036');
+        self::assertEquals('GB', $isrc->getCountryCode());
+        self::assertEquals('A1B', $isrc->getIssuerCode());
+        self::assertEquals('11', $isrc->getYear(true));
+        self::assertEquals(11, $isrc->getYear(false));
+        self::assertEquals('00036', $isrc->getId(true));
+        self::assertEquals(36, $isrc->getId(false));
+    }
+
+    public function testSettingTheParts()
+    {
+        $isrc = new Isrc();
+        $isrc->setCountryCode('GB');
+        $isrc->setIssuerCode('A1B');
+        $isrc->setYear(11);
+        $isrc->setId(36);
+
+        $this->assertEquals('GB-A1B-11-00036', $isrc->getIsrc(true, false));
     }
 
     public function testValidIsrcs()
@@ -33,7 +59,7 @@ class IsrcTest extends TestCase
         foreach($valid_isrcs as $valid_isrc => $formatted_isrc) {
             $isrc = new Isrc($valid_isrc);
             $this->assertTrue($isrc->isValid(), $valid_isrc);
-            $this->assertEquals($formatted_isrc, $isrc->getIsrc(false));
+            $this->assertEquals($formatted_isrc, $isrc->getIsrc(false, false));
             $this->assertEquals("ISRC {$formatted_isrc}", $isrc->getIsrc(false, true));
         }
 
@@ -61,12 +87,14 @@ class IsrcTest extends TestCase
         $this->assertTrue($isrc->isValid());
 
         $isrc->next();
+        $this->assertEquals(50001, $isrc->getId(false));
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B1150001', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B1150001', $isrc->getIsrc(false, false));
 
         $isrc->next(99999);
+        $this->assertEquals(99999, $isrc->getId(false));
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B1199999', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B1199999', $isrc->getIsrc(false, false));
 
         $isrc->next();
         $this->assertFalse($isrc->isValid());
@@ -79,11 +107,11 @@ class IsrcTest extends TestCase
 
         $isrc->previous();
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B1149999', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B1149999', $isrc->getIsrc(false, false));
 
         $isrc->previous(1);
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B1100001', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B1100001', $isrc->getIsrc(false, false));
 
         $isrc->previous();
         $this->assertFalse($isrc->isValid());
@@ -96,7 +124,7 @@ class IsrcTest extends TestCase
 
         $isrc->next(0, true);
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B1200001', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B1200001', $isrc->getIsrc(false, false));
 
 
         $isrc = new Isrc('GBA1B9999999');
@@ -104,7 +132,7 @@ class IsrcTest extends TestCase
 
         $isrc->next(0, true);
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B0000001', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B0000001', $isrc->getIsrc(false, false));
     }
 
     public function testFlipYearPrevious()
@@ -114,7 +142,7 @@ class IsrcTest extends TestCase
 
         $isrc->previous(Isrc::MAX_ID, true);
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B1099999', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B1099999', $isrc->getIsrc(false, false));
 
 
         $isrc = new Isrc('GBA1B0000001');
@@ -122,17 +150,24 @@ class IsrcTest extends TestCase
 
         $isrc->previous(Isrc::MAX_ID, true);
         $this->assertTrue($isrc->isValid());
-        $this->assertEquals('GBA1B9999999', $isrc->getIsrc(false));
+        $this->assertEquals('GBA1B9999999', $isrc->getIsrc(false, false));
     }
 
-    public function testSettingTheParts()
+    public function testSettingTheId()
     {
-        $isrc = new Isrc();
-        $isrc->setCountryCode('GB');
-        $isrc->setIssuerCode('A1B');
-        $isrc->setYear(11);
-        $isrc->setId(36);
+        $isrc = new Isrc('GB-A1B-11-00036');
 
-        $this->assertEquals('GB-A1B-11-00036', $isrc->getIsrc(true));
+        $isrc->setId(100000, false);
+        $this->assertEquals(false, $isrc->isValid());
+
+        $isrc->setId(100000, true);
+        $this->assertEquals(true, $isrc->isValid());
+        $this->assertEquals(1, $isrc->getId(false));
+        $this->assertEquals(12, $isrc->getYear(false));
+
+        $isrc->setId(-1, true);
+        $this->assertEquals(true, $isrc->isValid());
+        $this->assertEquals(99998, $isrc->getId(false));
+        $this->assertEquals(11, $isrc->getYear(false));
     }
 }
