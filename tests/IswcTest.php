@@ -64,4 +64,17 @@ class IswcTest extends TestCase
         $this->assertEquals('T-034.524.680-1', $iswc->getIswc(true));
         $this->assertEquals('T-034.524.680-1', (string)$iswc);
     }
+
+    public function testValid()
+    {
+        $iswc = new Iswc('A-034.524.680-1');
+        $this->assertEquals(false, $iswc->isValid());
+
+        $iswc = Iswc::fromId('034.524.680');
+        $iswc->setPrefix('A');
+        $this->assertEquals(false, $iswc->isValid());
+
+        $iswc->setId('A');
+        $this->assertEquals(false, $iswc->isValid());
+    }
 }
