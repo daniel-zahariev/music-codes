@@ -179,6 +179,7 @@ class IsrcTest extends TestCase
     {
         $isrc = new Isrc('GB-A1B-11-00036');
 
+        $this->assertEquals(true, $isrc->isValid());
         $isrc->setId(100000, false);
         $this->assertEquals(false, $isrc->isValid());
 
@@ -219,6 +220,35 @@ class IsrcTest extends TestCase
 
         $isrc->setIssuerCode('---');
         $this->assertFalse($isrc->isValid());
+    }
+
+    public function testPrefix()
+    {
+        $isrc = new Isrc('GB-A1B-11-00036');
+
+        $this->assertEquals(true, $isrc->isValid());
+        $this->assertEquals('GB-A1B', $isrc->getPrefix(true));
+        $this->assertEquals('GBA1B', $isrc->getPrefix(false));
+
+        $isrc->setPrefix('US-A1B');
+        $this->assertEquals(true, $isrc->isValid());
+        $this->assertEquals('USA1B', $isrc->getPrefix(false));
+
+        $isrc->setPrefix('USA1B');
+        $this->assertEquals(true, $isrc->isValid());
+        $this->assertEquals('USA1B', $isrc->getPrefix(false));
+
+        // invalid country
+        $isrc->setPrefix('T1A1B');
+        $this->assertEquals(false, $isrc->isValid());
+
+        // invalid length
+        $isrc->setPrefix('USA1');
+        $this->assertEquals(false, $isrc->isValid());
+
+        // invalid issuer
+        $isrc->setPrefix('USA-1');
+        $this->assertEquals(false, $isrc->isValid());
     }
 
 

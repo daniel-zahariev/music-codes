@@ -6,6 +6,7 @@ class Isrc
 {
     const NO_DASH_PATTERN = '/^(ISRC[\W]*)?([A-Z]{2})([A-Z0-9]{3})([0-9]{2})([0-9]{5})([\W]*ISRC)?$/';
     const DASHED_PATTERN = '/^(ISRC[\W]*)?([A-Z]{2})-([A-Z0-9]{3})-([0-9]{2})-([0-9]{5})([\W]*ISRC)?$/';
+    const PREFIX_PATTERN = '/^([A-Z]{2})-?([A-Z0-9]{3})$/';
     const MIN_ID = 1;
     const MAX_ID = 99999;
 
@@ -141,6 +142,36 @@ class Isrc
         ];
 
         return ($prefixed ? 'ISRC ' : '') . join($dashed ? '-' : '', $parts);
+    }
+
+    /**
+     * @param bool $dashed
+     * @return string
+     */
+    public function getPrefix($dashed = true): string
+    {
+        return join($dashed ? '-' : '', [$this->getCountryCode(), $this->getIssuerCode()]);
+    }
+
+    /**
+     * @param string $prefix
+     * @return Isrc
+     */
+    public function setPrefix($prefix): Isrc
+    {
+        preg_match(self::PREFIX_PATTERN, $prefix, $matches);
+
+        if (empty($matches)) {
+            $this->country_code = '';
+            $this->issuer_code = '';
+        } else {
+            $this->country_code = $matches[1];
+            $this->issuer_code = $matches[2];
+        }
+
+        $this->validate();
+
+        return $this;
     }
 
     /**
