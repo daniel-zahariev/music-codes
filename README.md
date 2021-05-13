@@ -23,6 +23,11 @@ $isrc->setIssuerCode('A1B');
 $isrc->setYear(11);
 $isrc->setId(3);
 
+// Prefix is the combination of country code and issuer code
+// and is now adopted as standard wording in ISRC specification
+// in order to allow allocation of ranges of ISRCs
+$isrc->setPrefix('GB-A1B'); // can be used with or without the dash   
+
 // will output 'Valid'
 echo ($isrc->isValid() ? 'Valid' : 'Not valid') . PHP_EOL;
 
@@ -67,6 +72,50 @@ if ($isrc->next()) {
 }
 
 ```
+
+ISWC
+====
+
+There are various ways to instantiate an ISWC object:
+
+```php
+
+$iswc = new Iswc('T-034.524.680-1'); // use either all separators
+$iswc = new Iswc('T0345246801'); // or none
+
+$iswc = Iswc::fromId('034.524.680');
+$iswc = Iswc::fromId('034524680');
+
+```
+
+Navigating up & down:
+
+```php
+
+$iswc = new Iswc('T-034.524.680-1');
+
+// Bumps up the id and auto-calculates the check digit
+// the ISWC is now: T-034.524.681-2
+$iswc->next();
+
+// the ISWC is now: T-034.524.679-8
+$iswc->previous();
+
+```
+
+Formatting:
+
+```php
+
+$iswc = new Iswc('T-034.524.680-1');
+
+echo $isrc; // outputs 'T-034.524.680-1'
+
+echo $isrc->getIswc(true); // outputs 'T-034.524.680-1'
+echo $isrc->getIswc(false); // outputs 'T0345246801'
+
+```
+
 
 
 License
