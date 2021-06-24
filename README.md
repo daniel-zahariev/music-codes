@@ -62,6 +62,9 @@ if ($isrc->previous()) {
 	echo $isrc->getIsrc(true) . PHP_EOL;
 }
 
+// reset
+$isrc->load('GB-A1B-11-00003');
+
 // go one up
 $isrc->next();
 
@@ -98,6 +101,9 @@ $iswc = new Iswc('T-034.524.680-1');
 // the ISWC is now: T-034.524.681-2
 $iswc->next();
 
+// reset
+$iswc->load('T-034.524.680-1');
+
 // the ISWC is now: T-034.524.679-8
 $iswc->previous();
 
@@ -109,10 +115,10 @@ Formatting:
 
 $iswc = new Iswc('T-034.524.680-1');
 
-echo $isrc; // outputs 'T-034.524.680-1'
+echo $iswc; // outputs 'T-034.524.680-1'
 
-echo $isrc->getIswc(true); // outputs 'T-034.524.680-1'
-echo $isrc->getIswc(false); // outputs 'T0345246801'
+echo $iswc->getIswc(true); // outputs 'T-034.524.680-1'
+echo $iswc->getIswc(false); // outputs 'T0345246801'
 
 ```
 

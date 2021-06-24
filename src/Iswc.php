@@ -53,6 +53,9 @@ class Iswc
 
         if (empty($matches)) {
             $this->is_valid = false;
+            $this->prefix = '';
+            $this->id = '';
+            $this->check_digit = '';
         } else {
             $this->prefix = $matches[1];
             $this->id = "{$matches[2]}{$matches[3]}{$matches[4]}";

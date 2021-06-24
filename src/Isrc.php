@@ -57,6 +57,10 @@ class Isrc
 
         if (empty($matches)) {
             $this->is_valid = false;
+            $this->country_code = '';
+            $this->issuer_code = '';
+            $this->year = -1;
+            $this->id = -1;
         } else {
             $this->country_code = $matches[2];
             $this->issuer_code = $matches[3];
@@ -249,7 +253,7 @@ class Isrc
      */
     public function getId($padded = false)
     {
-        return !$padded ? $this->id : str_pad($this->id, 5, '0', STR_PAD_LEFT);
+        return !$padded ? $this->id : str_pad((string)$this->id, 5, '0', STR_PAD_LEFT);
     }
 
     /**
