@@ -123,6 +123,53 @@ echo $iswc->getIswc(false); // outputs 'T0345246801'
 ```
 
 
+Label Code
+====
+
+There are various ways to instantiate an LabelCode object:
+
+```php
+
+$label_code = new LabelCode('LC-1234'); // dashes will be stripped by default
+$label_code = new LabelCode('LC1234');
+
+$label_code = LabelCode::fromParts('LC', 1234);
+$label_code = LabelCode::fromParts('LC-', '1234');
+
+```
+
+Navigating up & down:
+
+```php
+
+$label_code = new LabelCode('LC-1234');
+
+// Bumps up the id
+// the Label Code is now: LC-1235
+$label_code->next();
+
+// reset
+$label_code->load('LC-1234');
+
+// the Label Code is now: LC-1233
+$label_code->previous();
+
+```
+
+Formatting:
+
+```php
+
+$label_code = new LabelCode('LC-1234');
+
+echo $label_code; // outputs 'LC1234'
+
+echo $label_code->gecLabelCode(true); // outputs 'LC-1234'
+echo $label_code->gecLabelCode(false); // outputs 'LC1234'
+
+```
+
+
 
 License
 =======
