@@ -10,6 +10,7 @@ class Isrc
     const MIN_ID = 1;
     const MAX_ID = 99999;
 
+    protected static $ZERO_IDS_ALLOWED = false;
     /**
      * @var string
      */
@@ -71,6 +72,18 @@ class Isrc
         }
 
         return $this;
+    }
+
+    /**
+     * Trigger this function to allow zero ids (e.g. to count them as valid)
+     *
+     * @param boolean $valid
+     *
+     * @return void
+     */
+    public static function treatZeroIdsAsValid($valid)
+    {
+        static::$ZERO_IDS_ALLOWED = $valid;
     }
 
     /**
@@ -305,7 +318,9 @@ class Isrc
             $this->is_valid = false;
         }
 
-        if ($this->id < self::MIN_ID) {
+        if ($this->id == 0 && static::$ZERO_IDS_ALLOWED) {
+            // great - do nothing here
+        } elseif ($this->id < self::MIN_ID) {
             $this->is_valid = false;
         } elseif ($this->id > self::MAX_ID) {
             $this->is_valid = false;
@@ -313,10 +328,14 @@ class Isrc
     }
 
     /**
+     * @param  bool  $revalidate
+     *
      * @return bool
      */
-    public function isValid(): bool
+    public function isValid($revalidate = false): bool
     {
+        if ($revalidate) $this->validate();
+
         return $this->is_valid;
     }
 }

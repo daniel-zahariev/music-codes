@@ -31,9 +31,17 @@ $isrc->setPrefix('GB-A1B'); // can be used with or without the dash
 // will output 'Valid'
 echo ($isrc->isValid() ? 'Valid' : 'Not valid') . PHP_EOL;
 
+// By default, the ids equal to zero are not considered as valid
+// so to enable this globally you should call the following method:
+Isrc::treatZeroIdsAsValid(true);
+
+$isrc = new Isrc('GB-A1B-11-00000')
+// will output 'Valid'
+echo ($isrc->isValid() ? 'Valid' : 'Not valid') . PHP_EOL; 
+
 ```
 
-Different fomatting options:
+Different formatting options:
 
 ```php
 
@@ -169,6 +177,13 @@ echo $label_code->gecLabelCode(false); // outputs 'LC1234'
 
 ```
 
+
+Changelog
+=========
+
+**v1.3.1**
+- add method `treatZeroIdsAsValid` to Isrc class to enable validation of ISRC codes where the id is 0
+- add param to `isValid` method in Isrc class to enable revalidation on demand
 
 
 License

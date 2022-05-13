@@ -81,6 +81,16 @@ class IsrcTest extends TestCase
         }
     }
 
+    public function testZeroId()
+    {
+        $isrc = new Isrc('GBA1B1100000');
+        $this->assertFalse($isrc->isValid());
+
+        Isrc::treatZeroIdsAsValid(true);
+
+        $this->assertTrue($isrc->isValid(true));
+    }
+
     public function testNextIsrc()
     {
         $isrc = new Isrc('GBA1B1150000');
