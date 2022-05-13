@@ -11,7 +11,10 @@ Isrc
 ====
 
 **Note 1: for the country code portion of the ISRC the library only checks if it is comprised of 2 alphabetical characters** 
-**Note 2: ISRC with id 0 are not considered valid; example: `GB-A1B-11-00000`** 
+
+~~**Note 2: ISRC with id 0 are not considered valid; example: `GB-A1B-11-00000`**~~
+**Updated Note2: ISRCs with id 0 can now be treated as valid by calling a static method on the class prior it's general use**
+
 
 Setting ISRC parts:
 
